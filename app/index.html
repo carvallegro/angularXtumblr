@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+</head>
+
+<body ng-app="myTumblrApp">
+    <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+        <section id="post-section" ng-controller="PostcontrollerCtrl" ng-init="init()">
+        <h1>{{title}}</h1>
+        <h2>{{author}}</h2>
+        <h3>{{description}}</h3>
+
+        <h4>Posts trashed</h4>
+        <ul>
+            <p ng-show="!trashedPosts.length"><i>Liste vide</i></p>
+            <li id="{{p.id}}" ng-repeat="p in ( trashedPosts = (posts | filter:{isTrash:true}))">
+                <p>{{p.type}} - {{p.date}} - {{p.tags}} - {{p.reblog}}
+                    <input type="checkbox" ng-model="p.isTrash" ng-change="trash(p.id)">Montrer</p>
+                </p>
+            </li>
+
+        </ul>
+
+        <h4>Posts affichés</h4>
+        <ul infinite-scroll="loadPosts()" infinite-scroll-distance="0">
+            <p ng-show="!showedPosts.length"><i>Liste vide</i></p>
+                <ext-post ng-repeat="p in ( showedPosts = (posts | filter:{isTrash:false}))" post="p"></ext-post>
+
+              <!--   <p>{{p.type}} - {{p.date}} - {{p.tags}} - {{p.reblog}}
+                    <input type="checkbox" ng-model="p.isTrash" ng-change="trash(p.id)">Cacher</p>
+                <div ng-switch on="p.type">
+                    <div ng-switch-when="conversation">
+                        {{p.title}}
+                        <div ng-repeat="c in p.conversation"><b>{{c.name}} :</b> {{c.phrase}}</div>
+                    </div>
+                    <div ng-switch-when="link">
+                        {{p.title}} - {{p.description}} - {{p.link}}
+                    </div>
+                    <div ng-switch-when="quote">
+                        {{p.text}} - {{p.source}}
+                    </div>
+                    <div ng-switch-when="photo">
+                        <img ng-repeat="i in p.photos" src="{{i.url75}}" height="75" />
+                        <p ng-bind-html="p.caption"></p>
+                    </div>
+                    <div ng-switch-when="audio">
+                        {{p.artist}} - {{p.album}} - {{p.title}} - {{p.caption}} - {{p.url}} - {{p.plays}}
+                        <div ng-bind-html="p.embed"></div>
+                    </div>
+                    <div ng-switch-when="video">
+                        {{p.caption}} - {{p.url}}
+                        <div ng-bind-html="p.player250"></div>
+                    </div>
+                    <div ng-switch-when="regular">
+                        {{p.title}} -
+                        <div ng-bind-html="p.body"></div>
+                    </div>
+                </div> -->
+        </ul>
+    </section>
+
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <script type="text/javascript">
+        loadedData = {
+            userID: 'carvallegro',
+            tumblrURL: 'http://carvallegro.tumblr.com/api/read/json',
+            ajaxError: function (jqXHR, textStatus, errorThrown) {
+                console.error(textStatus + ' - ' + errorThrown);
+            }
+        }
+    </script>
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/services/tumblrservice.js"></script>
+    <script src="scripts/services/cacheservice.js"></script>
+    <script src="scripts/controllers/postcontroller.js"></script>
+    <script src="scripts/directives/extpost.js"></script>
+    <script src="scripts/directives/inpostdefault.js"></script>
+    <script src="scripts/directives/inpostconversation.js"></script>
+    <script src="scripts/directives/inpostlink.js"></script>
+    <script src="scripts/directives/inpostquote.js"></script>
+    <script src="scripts/directives/inpostphoto.js"></script>
+    <script src="scripts/directives/inpostaudio.js"></script>
+    <script src="scripts/directives/inpostvideo.js"></script>
+    <!-- endbuild -->
+
+    <script type="text/javascript">
+        window.onload = function () {
+            var scope = angular.element('[ng-controller="PostcontrollerCtrl"]').scope();
+            scope.$apply(function () {
+                scope.init();
+            });
+        };
+    </script>
+
+    <script type="text/ng-template" id="conversation">
+        <in-post-conversation></in-post-conversation>
+    </script>
+    <script type="text/ng-template" id="link">
+        <in-post-link></in-post-link>
+    </script>
+    <script type="text/ng-template" id="quote">
+        <in-post-quote></in-post-quote>
+    </script>
+    <script type="text/ng-template" id="photo">
+        <in-post-photo></in-post-photo>
+    </script>
+    <script type="text/ng-template" id="regular">
+        <in-post-default></in-post-default>
+    </script>
+    <script type="text/ng-template" id="audio">
+        <in-post-audio></in-post-audio>
+    </script>
+    <script type="text/ng-template" id="video">
+        <in-post-video></in-post-video>
+    </script>
+</body>
+
+</html>
