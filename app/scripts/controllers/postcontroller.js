@@ -171,4 +171,15 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
             $cacheService.removeFromTrash(idPost);
         }
     }
+
+    /*
+     * Ajoute/Supprime l'objet du cache Playlist
+     */
+    $scope.playlist = function (idPost) {
+        if ($cacheService.isPlaylistCached(idPost)) {
+            $cacheService.addToPlaylist(idPost);
+        } else {
+            $cacheService.removeFromPlaylist(idPost);
+        }
+    }
 }]);

@@ -1,0 +1,15 @@
+$c-light-mauve: #dccbe7;
+$c-dark-mauve: #9274a6;
+
+#header {
+  #social {
+    a {
+      color: $c-light-mauve;
+
+      &:hover {
+        color: $c-dark-mauve;
+      }
+    }
+  }
+
+}

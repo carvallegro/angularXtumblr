@@ -1,78 +1,108 @@
 <!doctype html>
 <html>
 
-<head>
+  <head>
     <meta charset="utf-8">
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Sans">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Playfair+DisplaySans">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <!-- endbower -->
     <!-- endbuild -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-</head>
+    <!-- build:css(.tmp) styles/color.css -->
+    <link rel="stylesheet" href="styles/color.css">
+    <!-- endbuild -->
+  </head>
 
-<body ng-app="myTumblrApp">
+  <body ng-app="myTumblrApp">
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+    <div id="menu">
+      <div id="m-content">
+        <div id="m-top">
+          <h4>Coucou,</h4>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+          </p>
+          <div id="m-social">
+            <a href="#" ><i class="fa fa-dribbble"></i></a>
+            <a href="#" ><i class="fa fa-linkedin"></i></a>
+            <a href="#" ><i class="fa fa-instagram"></i></a>
+            <a href="#" ><i class="fa fa-twitter"></i></a>
+          </div>
+        </div>
+        <div id="m-items">
+          <a href="#">Accueil</a>
+          <a href="#">Archives</a>
+          <a href="#">Biographie</a>
+          <a href="#">Contact</a>
+          </ul>
+        </div>
+        <div id="m-footer">
+        </div>
+      </div>
+    </div>
 
-        <section id="post-section" ng-controller="PostcontrollerCtrl" ng-init="init()">
+    <section id="wrapper" ng-controller="PostcontrollerCtrl" ng-init="init()">
+      <div id="menu-btn-wrapper">
+        <a id="menu-btn" href="#"><i class="fa fa-bars fa-lg"></i></a>
+      </div>
+      <div id="search-block"><span>
+        <i class="fa fa-search fa-lg"></i></span>
+        <input type="text" size="5" placeholder="Search..."></input>
+      </div>
+      <div id="header">
+        <p><a id="img-profile" href="#"><img src="images/profile.png"/></a></p>
+        <div id="social">
+          <a href="#" ><i class="fa fa-dribbble"></i></a>
+          <a href="#" ><i class="fa fa-linkedin"></i></a>
+          <a href="#" ><i class="fa fa-instagram"></i></a>
+          <a href="#" ><i class="fa fa-twitter"></i></a>
+        </div>
         <h1>{{title}}</h1>
-        <h2>{{author}}</h2>
-        <h3>{{description}}</h3>
+        <p>{{author}}</p>
+        <p>{{description}}</p>
+      </div>
+      <div id="post-section">
+      <h4>Posts trashed</h4>
+      <ul>
+        <p ng-show="!trashedPosts.length"><i>Liste vide</i></p>
+        <li id="{{p.id}}" ng-repeat="p in ( trashedPosts = (posts | filter:{isTrash:true}))">
+          <p>{{p.type}} - {{p.date}} - {{p.tags}} - {{p.reblog}}
+            <input type="checkbox" ng-model="p.isTrash" ng-change="trash(p.id)">Montrer</p>
+          </p>
+        </li>
 
-        <h4>Posts trashed</h4>
-        <ul>
-            <p ng-show="!trashedPosts.length"><i>Liste vide</i></p>
-            <li id="{{p.id}}" ng-repeat="p in ( trashedPosts = (posts | filter:{isTrash:true}))">
-                <p>{{p.type}} - {{p.date}} - {{p.tags}} - {{p.reblog}}
-                    <input type="checkbox" ng-model="p.isTrash" ng-change="trash(p.id)">Montrer</p>
-                </p>
-            </li>
+      </ul>
 
-        </ul>
+      <h4>Posts playlisted</h4>
+      <ul>
+        <p ng-show="!playlistPosts.length"><i>Liste vide</i></p>
+        <li id="{{p.id}}" ng-repeat="p in ( playlistPosts = (posts | filter:{isPlaylist:true}))">
+          <p>{{p.type}} - {{p.date}} - {{p.tags}} - {{p.reblog}}
+            <input type="checkbox" ng-model="p.isTrash" ng-change="trash(p.id)">Montrer</p>
+          </p>
+        </li>
 
-        <h4>Posts affichés</h4>
-        <ul infinite-scroll="loadPosts()" infinite-scroll-distance="0">
-            <p ng-show="!showedPosts.length"><i>Liste vide</i></p>
-                <ext-post ng-repeat="p in ( showedPosts = (posts | filter:{isTrash:false}))" post="p"></ext-post>
+      </ul>
 
-              <!--   <p>{{p.type}} - {{p.date}} - {{p.tags}} - {{p.reblog}}
-                    <input type="checkbox" ng-model="p.isTrash" ng-change="trash(p.id)">Cacher</p>
-                <div ng-switch on="p.type">
-                    <div ng-switch-when="conversation">
-                        {{p.title}}
-                        <div ng-repeat="c in p.conversation"><b>{{c.name}} :</b> {{c.phrase}}</div>
-                    </div>
-                    <div ng-switch-when="link">
-                        {{p.title}} - {{p.description}} - {{p.link}}
-                    </div>
-                    <div ng-switch-when="quote">
-                        {{p.text}} - {{p.source}}
-                    </div>
-                    <div ng-switch-when="photo">
-                        <img ng-repeat="i in p.photos" src="{{i.url75}}" height="75" />
-                        <p ng-bind-html="p.caption"></p>
-                    </div>
-                    <div ng-switch-when="audio">
-                        {{p.artist}} - {{p.album}} - {{p.title}} - {{p.caption}} - {{p.url}} - {{p.plays}}
-                        <div ng-bind-html="p.embed"></div>
-                    </div>
-                    <div ng-switch-when="video">
-                        {{p.caption}} - {{p.url}}
-                        <div ng-bind-html="p.player250"></div>
-                    </div>
-                    <div ng-switch-when="regular">
-                        {{p.title}} -
-                        <div ng-bind-html="p.body"></div>
-                    </div>
-                </div> -->
-        </ul>
+      <h4>Posts affichés</h4>
+      <ul infinite-scroll="loadPosts()" infinite-scroll-distance="0">
+        <p ng-show="!showedPosts.length"><i>Liste vide</i></p>
+        <ext-post ng-repeat="p in ( showedPosts = (posts | filter:{isTrash:false}))" post="p"></ext-post>
+      </ul>
     </section>
 
 
@@ -92,18 +122,17 @@
     <!-- endbuild -->
 
     <script type="text/javascript">
-        loadedData = {
-            userID: 'carvallegro',
-            tumblrURL: 'http://carvallegro.tumblr.com/api/read/json',
-            ajaxError: function (jqXHR, textStatus, errorThrown) {
-                console.error(textStatus + ' - ' + errorThrown);
-            }
+      loadedData = {
+        userID: 'carvallegro',
+        tumblrURL: 'http://carvallegro.tumblr.com/api/read/json',
+        ajaxError: function(jqXHR, textStatus, errorThrown) {
+          console.error(textStatus + ' - ' + errorThrown);
         }
+      }
     </script>
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
-    <script src="scripts/controllers/main.js"></script>
     <script src="scripts/services/tumblrservice.js"></script>
     <script src="scripts/services/cacheservice.js"></script>
     <script src="scripts/controllers/postcontroller.js"></script>
@@ -118,35 +147,35 @@
     <!-- endbuild -->
 
     <script type="text/javascript">
-        window.onload = function () {
-            var scope = angular.element('[ng-controller="PostcontrollerCtrl"]').scope();
-            scope.$apply(function () {
-                scope.init();
-            });
-        };
+      window.onload = function() {
+        var scope = angular.element('[ng-controller="PostcontrollerCtrl"]').scope();
+        scope.$apply(function() {
+          scope.init();
+        });
+      };
     </script>
 
     <script type="text/ng-template" id="conversation">
-        <in-post-conversation></in-post-conversation>
+      <in-post-conversation></in-post-conversation>
     </script>
     <script type="text/ng-template" id="link">
-        <in-post-link></in-post-link>
+      <in-post-link></in-post-link>
     </script>
     <script type="text/ng-template" id="quote">
-        <in-post-quote></in-post-quote>
+      <in-post-quote></in-post-quote>
     </script>
     <script type="text/ng-template" id="photo">
-        <in-post-photo></in-post-photo>
+      <in-post-photo></in-post-photo>
     </script>
     <script type="text/ng-template" id="regular">
-        <in-post-default></in-post-default>
+      <in-post-default></in-post-default>
     </script>
     <script type="text/ng-template" id="audio">
-        <in-post-audio></in-post-audio>
+      <in-post-audio></in-post-audio>
     </script>
     <script type="text/ng-template" id="video">
-        <in-post-video></in-post-video>
+      <in-post-video></in-post-video>
     </script>
-</body>
+  </body>
 
 </html>
