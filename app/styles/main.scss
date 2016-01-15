@@ -13,9 +13,16 @@ $playfair: 'Playfair Display Sans';
   @if $from == $to {
     @return 'h#{$from}';
   }
-
   @else {
     @return 'h#{$from},' + headings($from+1, $to);
+  }
+}
+
+@mixin neutral-a {
+  text-decoration: none;
+  color: inherit;
+  &:focus {
+    outline: none;
   }
 }
 
@@ -28,6 +35,14 @@ body {
   font-family          : $droid;
 }
 
+.social {
+  margin-top    : 20px;
+  letter-spacing: 0.5em;
+  a {
+    @include neutral-a;
+  }
+}
+
 #menu {
   position        : fixed;
   top             : 0;
@@ -37,10 +52,15 @@ body {
   height          : 100%;
   background-color: $c-darker-black;
   color           : $c-light-grey;
-
+  #m-close {
+    @include neutral-a;
+    color   : white;
+    position: absolute;
+    top     : 10px;
+    right   : 10px;
+  }
   #m-content {
     margin: 75px 50px;
-
     #m-top {
       padding-bottom: 40px;
       border-bottom : {
@@ -48,20 +68,14 @@ body {
         style: solid;
         color: rgba($c-light-grey, 0.2);
       }
-
       h4 {
-        color: white;
-        font-family    : $playfair;
-        font-size: 1.3em;
+        color      : white;
+        font-family: $playfair;
+        font-size  : 1.3em;
       }
-
-      #m-social {
-        margin-top    : 20px;
-        letter-spacing: 0.5em;
-
+      .social {
         a {
           color: $c-light-grey;
-
           &:hover {
             color: $c-grey;
           }
@@ -72,29 +86,21 @@ body {
     #m-items {
       padding-bottom: 7px;
       padding-top   : 7px;
-
       a {
-        font-family    : $playfair;
-        font-size      : 1.3em;
-        color          : white;
-        text-decoration: none;
-        display        : block;
-        width          : 100%;
-        padding-bottom : 7px;
-        padding-top    : 7px;
-
-        &:focus {
-          outline: none;
-        }
-
+        @include neutral-a;
+        font-family   : $playfair;
+        font-size     : 1.3em;
+        color         : white;
+        display       : block;
+        width         : 100%;
+        padding-bottom: 7px;
+        padding-top   : 7px;
         &:hover {
           background-color: lighten($c-darker-black, 5);
         }
-
         &:active {
           background-color: lighten($c-darker-black, 10);
         }
-
       }
     }
 
@@ -103,6 +109,16 @@ body {
         width: 1px;
         style: solid;
         color: rgba($c-light-grey, 0.2);
+      }
+      p {
+        font-size: 0.8em;
+        text-align: right;
+        a{
+          @include neutral-a;
+          &:hover{
+            color: #4078C0;
+          }
+        }
       }
     }
   }
@@ -155,11 +171,6 @@ body {
     }
   }
 
-  #social {
-    margin-top    : 20px;
-    letter-spacing: 0.5em;
-  }
-
   h1 {
     font          : $droid;
     font-weight   : bold;
@@ -178,4 +189,3 @@ body {
 }
 // #header
 #post-section {}
-// #post-section

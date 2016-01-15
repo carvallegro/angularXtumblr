@@ -13,20 +13,23 @@
     <!-- bower:css -->
     <!-- endbower -->
     <!-- endbuild -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/color.css -->
     <link rel="stylesheet" href="styles/color.css">
     <!-- endbuild -->
+    <!-- build:css(.tmp) styles/my-icons.css -->
+    <link rel="stylesheet" href="styles/my-icons.css">
+    <!-- endbuild -->
   </head>
 
-  <body ng-app="myTumblrApp">
+  <body ng-app="myTumblrApp" ng-controller="UicontrollerCtrl">
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div id="menu">
+    <div id="menu" ng-show="isMenuOpen" >
+      <a id="m-close" href="#" ng-click="isMenuOpen = false"><i class="i i-close i-2x"></i></a>
       <div id="m-content">
         <div id="m-top">
           <h4>Coucou,</h4>
@@ -36,11 +39,11 @@
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
             aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
           </p>
-          <div id="m-social">
-            <a href="#" ><i class="fa fa-dribbble"></i></a>
-            <a href="#" ><i class="fa fa-linkedin"></i></a>
-            <a href="#" ><i class="fa fa-instagram"></i></a>
-            <a href="#" ><i class="fa fa-twitter"></i></a>
+          <div class="social">
+            <a href="#" ><i class="i i-dribbble"></i></a>
+            <a href="#" ><i class="i i-facebook"></i></a>
+            <a href="#" ><i class="i i-instagram"></i></a>
+            <a href="#" ><i class="i i-twitter"></i></a>
           </div>
         </div>
         <div id="m-items">
@@ -51,25 +54,26 @@
           </ul>
         </div>
         <div id="m-footer">
+          <p>made with <a href="https://github.com/Hahuha/angularXtumblr" target="_blank"><i class="i i-github i-lg"></i></a></p>
         </div>
       </div>
     </div>
 
     <section id="wrapper" ng-controller="PostcontrollerCtrl" ng-init="init()">
       <div id="menu-btn-wrapper">
-        <a id="menu-btn" href="#"><i class="fa fa-bars fa-lg"></i></a>
+        <a id="menu-btn" href="#" ng-click="$parent.isMenuOpen = true"><i class="i i-menu i-lg"></i></a>
       </div>
       <div id="search-block"><span>
-        <i class="fa fa-search fa-lg"></i></span>
+        <i class="i i-search i-lg"></i></span>
         <input type="text" size="5" placeholder="Search..."></input>
       </div>
       <div id="header">
         <p><a id="img-profile" href="#"><img src="images/profile.png"/></a></p>
-        <div id="social">
-          <a href="#" ><i class="fa fa-dribbble"></i></a>
-          <a href="#" ><i class="fa fa-linkedin"></i></a>
-          <a href="#" ><i class="fa fa-instagram"></i></a>
-          <a href="#" ><i class="fa fa-twitter"></i></a>
+        <div class="social">
+          <a href="#" ><i class="i i-dribbble"></i></a>
+          <a href="#" ><i class="i i-facebook"></i></a>
+          <a href="#" ><i class="i i-instagram"></i></a>
+          <a href="#" ><i class="i i-twitter"></i></a>
         </div>
         <h1>{{title}}</h1>
         <p>{{author}}</p>
@@ -144,6 +148,7 @@
     <script src="scripts/directives/inpostphoto.js"></script>
     <script src="scripts/directives/inpostaudio.js"></script>
     <script src="scripts/directives/inpostvideo.js"></script>
+    <script src="scripts/controllers/uicontroller.js"></script>
     <!-- endbuild -->
 
     <script type="text/javascript">

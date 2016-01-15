@@ -1,0 +1,24 @@
+// Base Class Definition
+// -------------------------
+
+.#{$icon-prefix} {
+  display: inline-block;
+  font: normal normal normal #{$fa-font-size-base}/#{$fa-line-height-base} 'tumblrxangular-icons'; // shortening font declaration
+  font-size: inherit; // can't have font-size inherit on line above, so need to override
+  text-rendering: auto; // optimizelegibility throws things off #1094
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+}
+/*
+#{$icon-selector} {
+  font-family            : 'tumblrxangular-icons' !important;
+  font-style             : normal !important;
+  font-weight            : normal !important;
+  font-variant           : normal !important;
+  text-transform         : none !important;
+  speak                  : none;
+  line-height            : 1;
+  -webkit-font-smoothing : antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}*/

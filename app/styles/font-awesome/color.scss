@@ -2,7 +2,7 @@ $c-light-mauve: #dccbe7;
 $c-dark-mauve: #9274a6;
 
 #header {
-  #social {
+  .social {
     a {
       color: $c-light-mauve;
 
@@ -11,5 +11,4 @@ $c-dark-mauve: #9274a6;
       }
     }
   }
-
 }

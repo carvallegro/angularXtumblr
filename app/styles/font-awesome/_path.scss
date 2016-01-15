@@ -1,0 +1,13 @@
+@font-face {
+  display: inline-block;
+  font-family: 'tumblrxangular-icons';
+  src        : url('../fonts/tumblrxangular-icons.eot');
+  src        : url('../fonts/tumblrxangular-icons.eot?#iefix') format("embedded-opentype"),
+               url('../fonts/tumblrxangular-icons.woff') format("woff"),
+               url('../fonts/tumblrxangular-icons.ttf') format("truetype"),
+               url('../fonts/tumblrxangular-icons.svg#tumblrxangular-icons') format("svg");
+  font-size: inherit; // can't have font-size inherit on line above, so need to override
+  text-rendering: auto; // optimizelegibility throws things off #1094
+  font-weight: normal;
+  font-style : normal;
+}
