@@ -28,22 +28,20 @@
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div id="menu" ng-show="isMenuOpen" >
+    <nav id="menu" ng-show="isMenuOpen">
       <a id="m-close" href="#" ng-click="isMenuOpen = false"><i class="i i-close i-2x"></i></a>
       <div id="m-content">
         <div id="m-top">
           <h4>Coucou,</h4>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+            Lorem ipsum dolor sit amet, BONJOUR consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            irure dolor in reprehenderit
           </p>
           <div class="social">
-            <a href="#" ><i class="i i-dribbble"></i></a>
-            <a href="#" ><i class="i i-facebook"></i></a>
-            <a href="#" ><i class="i i-instagram"></i></a>
-            <a href="#" ><i class="i i-twitter"></i></a>
+            <a href="#"><i class="i i-dribbble"></i></a>
+            <a href="#"><i class="i i-facebook "></i></a>
+            <a href="#"><i class="i i-instagram"></i></a>
+            <a href="#"><i class="i i-twitter "></i></a>
           </div>
         </div>
         <div id="m-items">
@@ -54,10 +52,10 @@
           </ul>
         </div>
         <div id="m-footer">
-          <p>made with <a href="https://github.com/Hahuha/angularXtumblr" target="_blank"><i class="i i-github i-lg"></i></a></p>
+          <p>made by <a href="https://github.com/Hahuha/angularXtumblr" target="_blank"><i class="i i-github i-lg"></i>Carvallegro</a></p>
         </div>
       </div>
-    </div>
+    </nav>
 
     <section id="wrapper" ng-controller="PostcontrollerCtrl" ng-init="init()">
       <div id="menu-btn-wrapper">
@@ -68,49 +66,69 @@
         <input type="text" size="5" placeholder="Search..."></input>
       </div>
       <div id="header">
-        <p><a id="img-profile" href="#"><img src="images/profile.png"/></a></p>
+        <p>
+          <a id="img-profile" href="#"><img src="images/profile.png" /></a>
+        </p>
         <div class="social">
-          <a href="#" ><i class="i i-dribbble"></i></a>
-          <a href="#" ><i class="i i-facebook"></i></a>
-          <a href="#" ><i class="i i-instagram"></i></a>
-          <a href="#" ><i class="i i-twitter"></i></a>
+          <a href="#"><i class="i i-dribbble"></i></a>
+          <a href="#"><i class="i i-facebook"></i></a>
+          <a href="#"><i class="i i-instagram"></i></a>
+          <a href="#"><i class="i i-twitter"></i></a>
         </div>
         <h1>{{title}}</h1>
         <p>{{author}}</p>
         <p>{{description}}</p>
       </div>
       <div id="post-section">
-      <h4>Posts trashed</h4>
-      <ul>
-        <p ng-show="!trashedPosts.length"><i>Liste vide</i></p>
-        <li id="{{p.id}}" ng-repeat="p in ( trashedPosts = (posts | filter:{isTrash:true}))">
-          <p>{{p.type}} - {{p.date}} - {{p.tags}} - {{p.reblog}}
-            <input type="checkbox" ng-model="p.isTrash" ng-change="trash(p.id)">Montrer</p>
-          </p>
-        </li>
+        <h4>Posts trashed</h4>
+        <ul>
+          <p ng-show="!trashedPosts.length"><i>Liste vide</i></p>
+          <li id="{{p.id}}" ng-repeat="p in ( trashedPosts = (posts | filter:{isTrash:true}))">
+            <p>{{p.type}} - {{p.date}} - {{p.tags}} - {{p.reblog}}
+              <input type="checkbox" ng-model="p.isTrash" ng-change="trash(p.id)">Montrer</p>
+            </p>
+          </li>
 
-      </ul>
+        </ul>
 
-      <h4>Posts playlisted</h4>
-      <ul>
-        <p ng-show="!playlistPosts.length"><i>Liste vide</i></p>
-        <li id="{{p.id}}" ng-repeat="p in ( playlistPosts = (posts | filter:{isPlaylist:true}))">
-          <p>{{p.type}} - {{p.date}} - {{p.tags}} - {{p.reblog}}
-            <input type="checkbox" ng-model="p.isTrash" ng-change="trash(p.id)">Montrer</p>
-          </p>
-        </li>
+        <h4>Posts playlisted</h4>
+        <ul>
+          <p ng-show="!playlistPosts.length"><i>Liste vide</i></p>
+          <li id="{{p.id}}" ng-repeat="p in ( playlistPosts = (posts | filter:{isPlaylist:true}))">
+            <p>{{p.type}} - {{p.date}} - {{p.tags}} - {{p.reblog}}
+              <input type="checkbox" ng-model="p.isTrash" ng-change="trash(p.id)">Montrer</p>
+            </p>
+          </li>
 
-      </ul>
+        </ul>
 
-      <h4>Posts affichés</h4>
-      <ul infinite-scroll="loadPosts()" infinite-scroll-distance="0">
-        <p ng-show="!showedPosts.length"><i>Liste vide</i></p>
-        <ext-post ng-repeat="p in ( showedPosts = (posts | filter:{isTrash:false}))" post="p"></ext-post>
-      </ul>
+        <h4>Posts affichés</h4>
+        <ul infinite-scroll="loadPosts()" infinite-scroll-distance="0">
+          <p ng-show="!showedPosts.length"><i>Liste vide</i></p>
+          <ext-post ng-repeat="p in ( showedPosts = (posts | filter:{isTrash:false}))" post="p"></ext-post>
+        </ul>
     </section>
 
-
-    <!-- build:js(.) scripts/vendor.js -->
+    <section id="player-wrapper">
+      <div id="pl-info">
+        <div id="pl-song">Starfuckeuze</div>
+        <div id="pl-artist">Rohff</div>
+      </div>
+      <div id="pl-control">
+        <a id="pl-previous" href="#"><i class="i i-previous"></i></a>
+        <a id="pl-play" href="#"><i class="i i-play"></i></a>
+        <a id="pl-next" href="#"><i class="i i-next"></i></a>
+      </div>
+      <div id="pl-time">
+        <div id="pl-pg-table">
+          <div id="pl-c-time"><span>0:00</span></div>
+          <div id="pl-progress" class="progress">
+              <div class="indeterminate" style="width: 90%"></div>
+          </div>
+          <div id="pl-c-total"><span>3:32</span></div>
+        </div>
+      </div>
+    </section <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>

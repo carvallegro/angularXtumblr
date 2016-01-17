@@ -1,5 +1,5 @@
 
-$map: (love-o: "\61", linkedin: "\62", streamline-sync: "\63", twitter: "\64", facebook: "\65", instagram: "\66", dribbble: "\67", close: "\68", menu: "\6d", mail: "\69", upload-o: "\6a", retweet: "\6b", plus: "\71", note-5: "\72", note-4: "\73", note-1: "\74", note-2: "\75", note-3: "\76", previous-o: "\77", previous: "\78", play-o:"\79", search: '\70', search-1: '\41', search-2: '\42', github: '\43', sass: '\44', css3: '\45', css3-o: "\46", angular: "\47", angular-o: "\48", code: "\49");
+$map: (love-o: "\61", linkedin: "\62", streamline-sync: "\63", twitter: "\64", facebook: "\65", instagram: "\66", dribbble: "\67", close: "\68", menu: "\6d", mail: "\69", upload-o: "\6a", retweet: "\6b", plus: "\71", note-5: "\72", note-4: "\73", note-1: "\74", note-2: "\75", note-3: "\76", previous-o: "\77", previous: "\78", play-o:"\79", play:"\7a", next:"\6c", next-o:"\6e", search: '\70', search-1: '\41', search-2: '\42', github: '\43', sass: '\44', css3: '\45', css3-o: "\46", angular: "\47", angular-o: "\48", code: "\49");
 
 @each $key,
 $value in $map {

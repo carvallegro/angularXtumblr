@@ -8,5 +8,5 @@
  * Controller of the myTumblrApp
  */
 angular.module('myTumblrApp').controller('UicontrollerCtrl',[ '$scope', function ($scope) {
-    this.isMenuOpen=$scope.isMenuOpen=true;
+    this.isMenuOpen=$scope.isMenuOpen=false;
   }]);

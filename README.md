@@ -1,2 +1,2 @@
 # angularXtumblr
-Full Tumblr theme using AngularJS
+Full Tumblr theme using AngularJS.
