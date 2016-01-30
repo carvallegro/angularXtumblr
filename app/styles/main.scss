@@ -3,32 +3,10 @@
 @import "compass/css3/text-shadow";
 @import "compass/css3/box-sizing";
 @import "compass/css3/images";
+@import "_variables";
+@import "_mixins";
 @import "_progress-bar";
-$c-black: #1c1c1c;
-$c-darker-black: #181818;
-$c-light-grey: #6e6e6e;
-$c-grey: #8f8f8f;
-$droid: 'Droid Sans';
-$playfair: 'Playfair Display Sans';
-
-@function headings($from:1, $to:6) {
-  @if $from == $to {
-    @return 'h#{$from}';
-  }
-
-  @else {
-    @return 'h#{$from},' + headings($from+1, $to);
-  }
-}
-
-@mixin neutral-a {
-  text-decoration: none;
-  color          : inherit;
-
-  &:focus {
-    outline: none;
-  }
-}
+@import "_grid";
 
 body {
   background-image     : url('../images/background.png');
@@ -37,6 +15,7 @@ body {
   background-position  : top;
   background-size      : 100% auto;
   font-family          : $droid;
+  margin-bottom        : $player-height + 20px;
 }
 
 .social {
@@ -47,103 +26,11 @@ body {
     @include neutral-a;
   }
 }
+@import "_menu";
+@import "_player";
 
-#menu {
-  position        : fixed;
-  top             : 0;
-  left            : 0;
-  z-index         : 20;
-  width           : 400px;
-  height          : 100%;
-  background-color: $c-darker-black;
-  color           : $c-light-grey;
-
-  #m-close {
-    @include neutral-a;
-    color   : white;
-    position: absolute;
-    top     : 10px;
-    right   : 10px;
-  }
-
-  #m-content {
-    margin: 75px 50px;
-
-    #m-top {
-      padding-bottom: 40px;
-      border-bottom : {
-        width: 1px;
-        style: solid;
-        color: rgba($c-light-grey, 0.2);
-      }
-
-      h4 {
-        color      : white;
-        font-family: $playfair;
-        font-size  : 1.3em;
-      }
-
-      .social {
-        a {
-          color: $c-light-grey;
-
-          &:hover {
-            color: $c-grey;
-          }
-        }
-      }
-    }
-
-    #m-items {
-      padding-bottom: 7px;
-      padding-top   : 7px;
-
-      a {
-        @include neutral-a;
-        font-family   : $playfair;
-        font-size     : 1.3em;
-        color         : white;
-        display       : block;
-        width         : 100%;
-        padding-bottom: 7px;
-        padding-top   : 7px;
-
-        &:hover {
-          background-color: lighten($c-darker-black, 5);
-        }
-
-        &:active {
-          background-color: lighten($c-darker-black, 10);
-        }
-      }
-    }
-
-    #m-footer {
-      border-top: {
-        width: 1px;
-        style: solid;
-        color: rgba($c-light-grey, 0.2);
-      }
-
-      p {
-        font-size : 0.8em;
-        text-align: right;
-
-        a {
-          @include neutral-a;
-
-          &:hover {
-            color: #4078C0;
-          }
-        }
-      }
-    }
-  }
-  // #m-content
-}
-// #menu
 #wrapper {
-  max-width   : 900px;
+  max-width   : $wrapper-width;
   margin-right: auto;
   margin-left : auto;
 }
@@ -206,113 +93,3 @@ body {
 }
 // #header
 #post-section {}
-
-#player-wrapper {
-  $player-height: 40px;
-  position      : fixed;
-  bottom        : 0;
-  left          : 0;
-  right         : 0;
-  max-width     : 100%;
-  height        : $player-height;
-  color         : white;
-  padding       : 1em 5em;
-  @include flexbox((
-    display: inline-flex,
-    flex-direction: row
-  ));
-  @include justify-content(flex-start);
-  @include align-items(center);
-  @include align-content(center);
-
-  & > div {
-    min-height    : 100%;
-    vertical-align: middle;
-    margin        : 0 1em;
-  }
-
-  #pl-info {
-    @include order(1);
-    @include flex-grow(1);
-    //width  : 120px;
-
-    #pl-song {
-      font-weight: bold;
-    }
-  }
-
-  #pl-control {
-    @include order(1);
-    @include flex-grow(1);
-    //width         : 160px;
-    line-height   : $player-height;
-    text-align    : center;
-    vertical-align: bottom;
-
-    a {
-      @include neutral-a;
-      line-height   : normal;
-      margin-top    : auto;
-      margin-bottom : auto;
-      font-size     : 1.3em;
-      vertical-align: middle;
-      margin        : 0 0.65em;
-      color         : rgba($c-darker-black, 0.6);
-
-      &:hover {
-        color: rgba(#fff, 0.75);
-      }
-
-      &:active {
-        color: white;
-      }
-    }
-  }
-
-  #pl-time {
-    @include order(20);
-    @include flex-grow(20);
-    font-weight: bold;
-    height: 100%;
-    #pl-pg-table {
-      width: 100%;
-      height: 100%;
-      @include flexbox((
-        display: inline-flex,
-        flex-direction: row
-      ));
-      @include justify-content(flex-start);
-      @include align-items(center);
-      @include align-content(center);
-      & > div {
-        line-height: $player-height;
-      }
-
-      #pl-c-time {
-        @include order(1);
-        @include flex-grow(1);
-        text-align: right;
-        span {
-          line-height: normal;
-        }
-      }
-
-      #pl-c-total {
-        @include order(3);
-        @include flex-grow(1);
-        text-align: right;
-        color     : rgba($c-darker-black, 0.6);
-        span {
-          line-height: normal;
-        }
-      }
-
-      #pl-progress {
-        @include order(2);
-        @include flex-grow(20);
-        margin: 0 1em;
-        line-height: normal;
-      }
-    }
-  }
-}

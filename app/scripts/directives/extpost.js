@@ -8,15 +8,24 @@
  */
 angular.module('myTumblrApp').directive('extPost', function () {
      return {
-      template: '<li id="{{$post.id}}"> ' +
-      			' <p>{{post.type}} - {{post.date}} - {{post.tags}} - {{post.reblog}}' +
-                '    <input type="checkbox" ng-model="post.isTrash" ng-change="trash(post.id)">Montrer</p>' +
-                '    <input type="checkbox" ng-model="post.isPlaylist" ng-change="playlist(post.id)">Playlist</p>' +
-                '    <div ng-include="post.type">' +
-                ' </p></li>',
+      template: '<div class="{{post.pClass}}" id="{{post.id}}">' +
+                '  <div class="content" ng-include="post.type"></div>' +
+      			    '  <div class="footer">' +
+                '    <span class="left">{{post.date | date:\'longDate\'}}</span>' +
+                '    <span class="right">' +
+                '     <a href="#"><i class="i i-mail"></i></a> ' +
+                '     <a href="#"><i class="i i-facebook"></i></a> ' +
+                '     <a href="#"><i class="i i-twitter"></i></a> ' +
+                '    </span>' +
+                '  </div>' +
+                '</div>',
       restrict: 'E',
+      replace: true,
       scope: {
-         post: '=post'
+         post : '=post'
       }
     };
   });
+  // {{post.tags}} - {{post.reblog}}
+  // '    <input type="checkbox" ng-model="post.isTrash" ng-change="trash(post.id)">Montrer</p>' +
+  // '    <input type="checkbox" ng-model="post.isPlaylist" ng-change="playlist(post.id)">Playlist</p>' +

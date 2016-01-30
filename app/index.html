@@ -57,7 +57,7 @@
       </div>
     </nav>
 
-    <section id="wrapper" ng-controller="PostcontrollerCtrl" ng-init="init()">
+    <section id="wrapper" ng-controller="PostcontrollerCtrl" ng-init="init()" infinite-scroll="loadPosts()" infinite-scroll-distance="0">
       <div id="menu-btn-wrapper">
         <a id="menu-btn" href="#" ng-click="$parent.isMenuOpen = true"><i class="i i-menu i-lg"></i></a>
       </div>
@@ -75,11 +75,11 @@
           <a href="#"><i class="i i-instagram"></i></a>
           <a href="#"><i class="i i-twitter"></i></a>
         </div>
-        <h1>{{title}}</h1>
-        <p>{{author}}</p>
-        <p>{{description}}</p>
+        <h1>{{infos.title}}</h1>
+        <p>{{infos.author}}</p>
+        <p>{{infos.description}}</p>
       </div>
-      <div id="post-section">
+      <!-- <div id="post-section">
         <h4>Posts trashed</h4>
         <ul>
           <p ng-show="!trashedPosts.length"><i>Liste vide</i></p>
@@ -90,7 +90,6 @@
           </li>
 
         </ul>
-
         <h4>Posts playlisted</h4>
         <ul>
           <p ng-show="!playlistPosts.length"><i>Liste vide</i></p>
@@ -99,14 +98,17 @@
               <input type="checkbox" ng-model="p.isTrash" ng-change="trash(p.id)">Montrer</p>
             </p>
           </li>
-
         </ul>
 
         <h4>Posts affichés</h4>
-        <ul infinite-scroll="loadPosts()" infinite-scroll-distance="0">
+        <!-- <ul infinite-scroll="loadPosts()" infinite-scroll-distance="0">
           <p ng-show="!showedPosts.length"><i>Liste vide</i></p>
           <ext-post ng-repeat="p in ( showedPosts = (posts | filter:{isTrash:false}))" post="p"></ext-post>
-        </ul>
+        </ul> ->
+      </div> -->
+      <h4>Posts affichés</h4>
+      <ext-post ng-repeat="p in ( showedPosts = (posts | filter:{isTrash:false}))" post="p">
+      </ext-post>
     </section>
 
     <section id="player-wrapper">
@@ -115,15 +117,18 @@
         <div id="pl-artist">Rohff</div>
       </div>
       <div id="pl-control">
-        <a id="pl-previous" href="#"><i class="i i-previous"></i></a>
+        <a id="pl-previous" href="#"><i class="i i-previous-o"></i></a>
+        <a id="pl-play" href="#"><i class="i i-play-o"></i></a>
+        <a id="pl-next" href="#"><i class="i i-next-o"></i></a>
+        <!-- <a id="pl-previous" href="#"><i class="i i-previous"></i></a>
         <a id="pl-play" href="#"><i class="i i-play"></i></a>
-        <a id="pl-next" href="#"><i class="i i-next"></i></a>
+        <a id="pl-next" href="#"><i class="i i-next"></i></a> -->
       </div>
       <div id="pl-time">
         <div id="pl-pg-table">
           <div id="pl-c-time"><span>0:00</span></div>
           <div id="pl-progress" class="progress">
-              <div class="indeterminate" style="width: 90%"></div>
+            <div class="indeterminate" style="width: 90%"></div>
           </div>
           <div id="pl-c-total"><span>3:32</span></div>
         </div>
@@ -140,6 +145,7 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
     <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+    <script src="bower_components/angular-i18n/angular-locale_fr-fr.js"></script> 
     <!-- endbower -->
     <!-- endbuild -->
 

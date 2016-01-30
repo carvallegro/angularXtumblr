@@ -1,13 +1,31 @@
 $c-light-mauve: #dccbe7;
 $c-dark-mauve: #9274a6;
 
+@mixin mauve-a {
+  a {
+    color: $c-light-mauve;
+
+    &:hover {
+      color: $c-dark-mauve;
+    }
+  }
+}
+
 #header {
   .social {
-    a {
-      color: $c-light-mauve;
+    @include mauve-a;
+  }
+}
 
-      &:hover {
+#wrapper {
+  .gr,
+  .gr-w {
+    .footer {
+      .left {
         color: $c-dark-mauve;
+      }
+      .right {
+        @include mauve-a;
       }
     }
   }

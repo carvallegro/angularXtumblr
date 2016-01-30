@@ -8,7 +8,8 @@
  */
 angular.module('myTumblrApp').directive('inPostQuote', function () {
     return {
-      template: '{{$parent.post.text}} - {{$parent.post.source}}',
+      template: '<p class="quote-text" ng-bind-html="$parent.post.text"><p>' +
+                '<p class="quote-author" ng-bind-html="$parent.post.source"></p>',
       restrict: 'E',
       scope: {
          post: '='
