@@ -8,7 +8,11 @@
  */
 angular.module('myTumblrApp').directive('inPostLink', function () {
     return {
-      template: '{{$parent.post.title}} - {{$parent.post.description}} - {{$parent.post.link}}',
+      template: '<div class="hashtag-section">'+
+                '<span ng-repeat="h in $parent.post.tags">#{{h}}</span>' +
+                '</div>'+
+                '<h3 class="url"><a href="{{$parent.post.url}}"><i class="i i-link-1"></i>{{$parent.post.title}}</a></h3>' +
+                '<p class="subtitle url-desc" ng-bind-html="$parent.post.description"></p>',
       restrict: 'E',
       scope: {
          post: '='

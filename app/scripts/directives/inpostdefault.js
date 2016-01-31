@@ -8,8 +8,11 @@
  */
 angular.module('myTumblrApp').directive('inPostDefault', function () {
     return {
-      template: '{{$parent.post.title}} -' +
-                '<div ng-bind-html="$parent.post.body"></div>',
+      template: '<div class="hashtag-section">'+
+                '<span ng-repeat="h in $parent.post.tags">#{{h}}</span>' +
+                '</div>'+
+                '<h3 class="default">{{$parent.post.title}}</h3>' +
+                '<p class="subtitle default" ng-bind-html="$parent.post.body"></p>',
       restrict: 'E',
       scope: {
          post: '='

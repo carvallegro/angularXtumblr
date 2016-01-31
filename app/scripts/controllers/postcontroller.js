@@ -56,8 +56,8 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
       id: post.id,
       isTrash: $cacheService.isTrashCached(post.id),
       isPlaylist: $cacheService.isPlaylistCached(post.id),
-      date: toDateLong (post.date),
-      tags: post.tags,
+      date: toDateLong(post.date),
+      tags: tagArray(post.tags),
       url: post.url,
       reblog: post['reblog-key']
     };
@@ -78,28 +78,19 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
     } else if (post.type === T.photo) {
       newPost.type = T.photo;
       newPost.caption = $sce.trustAsHtml(post['photo-caption']);
-      newPost.photos = [{
-        offset: 'o0',
-        w: post.width,
-        h: post.height,
-        url75: post['photo-url-75'],
-        url100: post['photo-url-100'],
-        url250: post['photo-url-250'],
-        url400: post['photo-url-400'],
-        url500: post['photo-url-500'],
-        url1000: post['photo-url-1000']
-      }];
+      newPost.photos = [];
       post.photos.forEach(function(data) {
         newPost.photos.push({
           offset: data.offset,
           w: data.width,
           h: data.height,
+          caption: data.caption,
           url75: data['photo-url-75'],
           url100: data['photo-url-100'],
           url250: data['photo-url-250'],
           url400: data['photo-url-400'],
           url500: data['photo-url-500'],
-          url1000: data['photo-url-1000']
+          url1280: data['photo-url-1280']
         });
       });
     } else if (post.type === T.audio) {
@@ -167,7 +158,7 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
       });
 
       // jscs:disable
-      if (tumblr_api_read.posts.length > 0) {  // jshint ignore:line
+      if (tumblr_api_read.posts.length > 0) { // jshint ignore:line
         endOfFeed = true;
         $scope.ajaxParam.start = $scope.ajaxParam.start + $scope.ajaxParam.num;
       }
@@ -200,7 +191,20 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
   /**
    * Renvoit la date au format Long
    */
-  function toDateLong (str) {
+  function toDateLong(str) {
     return new Date(str).getTime();
+  }
+
+  function tagArray(tags) {
+    if ( Object.prototype.toString.call( tags ) !== '[object Array]' ) {
+      return [];
+    }
+    var result = [];
+    tags.forEach(function(entry) {
+      entry.split(' ').forEach(function(e) {
+        result.push(e);
+      });
+    });
+    return result;
   }
 }]);

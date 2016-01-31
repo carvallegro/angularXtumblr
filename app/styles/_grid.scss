@@ -1,3 +1,4 @@
+@import "compass/css3";
 // Setting up the Magic Grid
 @import "susy";
 $susy: ( container-position: center, columns: 4, column-width: 10em, gutters: 1/20, gutter-position: split, math: fluid, grid-padding: 0px );
@@ -15,41 +16,122 @@ $susy: ( container-position: center, columns: 4, column-width: 10em, gutters: 1/
 
   .gr,
   .gr-w {
-    margin-bottom: 10px;
-    min-height: 200px;
-    max-height: 200px;
+    margin-bottom: 1em;
+    min-height: 25em;
+    max-height: 25em;
 
     @include flexbox(( display: inline-flex, flex-direction: column ));
     @include justify-content(space-between);
     @include align-items(stretch);
     @include align-content(center);
-    .content {
+
+    // .content
+    in-post-video, in-post-audio, in-post-default, in-post-photo,
+    in-post-quote, in-post-link, in-post-conversation {
       @include order(1);
       @include flex-grow(20);
       width: 100%;
       overflow: hidden;
 
-      .quote-text {
+      .hashtag-section {
+        font-family: $droid;
+        font-size: 0.8em;
+      }
+
+      h3{
         font-family: $playfair;
         font-size: 1.3em;
         font-weight: 100;
-        &:before {
-          content: '\00ab';
+        margin-top: 0.1em;
+        margin-bottom: 0.1em;
+        &.quote-text {
+          &:before {
+            content: '\201C';
+          }
+          &:after {
+            content: '\201D';
+          }
         }
-        &:after {
-          content: '\00bb';
+        &.conv-title {
+          margin-bottom: 0.3em;
+        }
+        &.url {
+          a {
+            @include neutral-a;
+          }
         }
       }
-      .quote-author {
+
+      .subtitle {
         font-family: $playfair;
         font-style: italic;
         font-size: 1em;
-        &:before {
-          content: "\2013";
-          margin-right: 0.7em;
+        &.quote-author {
+          &:before {
+            content: "\2013";
+            margin-right: 0.7em;
+          }
+        }
+        &.conv {
+          display: block;
+          margin-bottom: 0.3em;
         }
       }
+      .default {
+        text-overflow: ellipsis;
+        max-height: 100%;
+      }
+
+      .p-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        .photo-content {
+          height: 100%;
+          width: 100%;
+          position: relative;
+          img{
+            height: 100%;
+            display: inline;
+            position: absolute;
+            top:0px;
+            @for $i from 0 through 4 {
+              &.o-#{$i} {
+                left: 20% * $i;
+                @if $i != 0 {
+                    @include box-shadow(black 2px 2px 30px);
+                }
+              }
+            }
+          }
+        }
+        .photo-infos {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 1px;
+          right: 0;
+          color: white;
+          text-align: center;
+
+          .hashtag-section{
+            color: white;
+          }
+          .caption {
+            margin: 0.3em;
+            p {
+              margin: 0.3em;
+            }
+          }
+        }
+      }
+
+      .video {
+        height: 100%;
+        width: 100%;
+      }
     }
+
     .footer {
       @include order(2);
       @include flex-grow(1);

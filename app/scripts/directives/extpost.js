@@ -9,7 +9,7 @@
 angular.module('myTumblrApp').directive('extPost', function () {
      return {
       template: '<div class="{{post.pClass}}" id="{{post.id}}">' +
-                '  <div class="content" ng-include="post.type"></div>' +
+                '  <div class="content" ng-include="post.type" include-replace></div>' +
       			    '  <div class="footer">' +
                 '    <span class="left">{{post.date | date:\'longDate\'}}</span>' +
                 '    <span class="right">' +

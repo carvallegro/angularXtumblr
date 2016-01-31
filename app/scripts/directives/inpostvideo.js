@@ -8,11 +8,13 @@
  */
 angular.module('myTumblrApp').directive('inPostVideo', function () {
     return {
-      template: '{{$parent.post.caption}} - {{$parent.post.url}}' +
-                '<div ng-bind-html="$parent.post.player250"></div>',
+      template: '<div class="video" ng-bind-html="$parent.post.player"></div>',
       restrict: 'E',
       scope: {
          post: '='
+      },
+      link: function (scope, element) {
+        angular.element(element).find('iframe').prop('height', '100%').prop('width', '100%');
       }
     };
   });
