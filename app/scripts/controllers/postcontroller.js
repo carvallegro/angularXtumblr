@@ -69,7 +69,7 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
     } else if (post.type === T.link) {
       newPost.type = T.link;
       newPost.title = post['link-text'];
-      newPost.url = post['link-url'];
+      newPost.link = post['link-url'];
       newPost.description = post['link-description'];
     } else if (post.type === T.quote) {
       newPost.type = T.quote;
@@ -101,12 +101,12 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
       newPost.caption = post['audio-caption'];
       newPost.plays = post['audio-plays'];
       newPost.player = $sce.trustAsHtml(post['audio-player']);
-      newPost.embed = $sce.trustAsHtml(post['audio-embed']);
+      newPost.embed = $sce.trustAsHtml(adaptFrameSize(post['audio-embed']));
     } else if (post.type === T.video) {
       newPost.type = T.video;
       newPost.caption = $sce.trustAsHtml(post['video-caption']);
-      newPost.url = $sce.trustAsHtml(post['video-source']);
-      newPost.player = $sce.trustAsHtml(post['video-player']);
+      newPost.url = post['video-source'];
+      newPost.player = $sce.trustAsHtml(adaptFrameSize(post['video-player']));
       newPost.player500 = $sce.trustAsHtml(post['video-player-500']);
       newPost.player250 = $sce.trustAsHtml(post['video-player-250']);
     } else {
@@ -195,6 +195,9 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
     return new Date(str).getTime();
   }
 
+  /**
+   * Formate le champs des tags pour les prefixé d'un # et les espacer
+   */
   function tagArray(tags) {
     if ( Object.prototype.toString.call( tags ) !== '[object Array]' ) {
       return [];
@@ -206,5 +209,10 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
       });
     });
     return result;
+  }
+
+  function adaptFrameSize(html) {
+    html = html.replace(/(width=")\d+("\W+height=")\d+/, '$1100%$2100%');
+    return html;
   }
 }]);

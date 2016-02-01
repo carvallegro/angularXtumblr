@@ -8,11 +8,11 @@
  */
 angular.module('myTumblrApp').directive('inPostPhoto', function () {
     return {
-      template: '<div class="p-content">'+
-                '<div class="photo-content">' +
+      template: '<div class="photo-content">'+
+                '<div class="p-content">' +
                 ' <img ng-repeat="i in $parent.post.photos | limitTo:5" class="o-{{$index}}" src="{{i.url1280}}" height="100%" />' +
                 '</div> '+
-                '<div class="photo-infos">' +
+                '<div class="p-infos">' +
                 ' <div class="hashtag-section">'+
                 '   <span ng-repeat="h in $parent.post.tags">#{{h}}</span> ' +
                 ' </div>'+

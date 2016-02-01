@@ -20,15 +20,15 @@ $c-dark-mauve: #9274a6;
 #wrapper {
   .gr,
   .gr-w {
-    // .content 
+    // .content
     in-post-video, in-post-audio, in-post-default, in-post-photo,
     in-post-quote, in-post-link, in-post-conversation {
       .hashtag-section {
         color: $c-dark-mauve;
       }
-      .photo-infos {
+      [class$="-infos"] {
         background: rgba($c-dark-mauve, 0.7);
-      }
+      } 
     }
     .footer {
       .left {

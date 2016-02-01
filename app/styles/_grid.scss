@@ -61,6 +61,7 @@ $susy: ( container-position: center, columns: 4, column-width: 10em, gutters: 1/
           }
         }
       }
+      // h3
 
       .subtitle {
         font-family: $playfair;
@@ -77,19 +78,26 @@ $susy: ( container-position: center, columns: 4, column-width: 10em, gutters: 1/
           margin-bottom: 0.3em;
         }
       }
+      // .subtitle
+
       .default {
         text-overflow: ellipsis;
         max-height: 100%;
       }
 
-      .p-content {
+      // Full content (photo-content, video-content..)
+      & > [class$="-content"]{
         position: relative;
         width: 100%;
         height: 100%;
-        .photo-content {
+
+        // post content (p-content, v-content...)
+        & > [class$="-content"] {
           height: 100%;
           width: 100%;
           position: relative;
+
+          // Pour les posts images (p-content)
           img{
             height: 100%;
             display: inline;
@@ -104,8 +112,18 @@ $susy: ( container-position: center, columns: 4, column-width: 10em, gutters: 1/
               }
             }
           }
+          // img
+
+          // Pour les posts videos
+          .video {
+            width: 100%;
+            height: 100%;
+          }
         }
-        .photo-infos {
+        // & > [class$="-content"]
+
+
+        & > [class$="-infos"] {
           width: 100%;
           height: 100%;
           position: absolute;
@@ -124,13 +142,22 @@ $susy: ( container-position: center, columns: 4, column-width: 10em, gutters: 1/
             }
           }
         }
+        // & > [class$="-infos"]
       }
+      // & > [class$="-content"]
 
-      .video {
-        height: 100%;
-        width: 100%;
+      .video-content{
+        .v-infos {
+          top: 0;
+          @include transition(top .3s ease-in);
+        }
+        &:hover .v-infos {
+          top: 100%;
+          @include transition(top .3s ease-out);
+        }
       }
     }
+    // in-post-video, in-post-audio, in-post-default ...
 
     .footer {
       @include order(2);
@@ -152,5 +179,6 @@ $susy: ( container-position: center, columns: 4, column-width: 10em, gutters: 1/
         float: right;
       }
     }
+    // .footer
   }
 }
