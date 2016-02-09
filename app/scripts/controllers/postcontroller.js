@@ -11,7 +11,7 @@
  * # PostcontrollerCtrl
  * Controller of the myTumblrApp
  */
-angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http', '$sce', 'tumblrService', 'cacheService', function($scope, $http, $sce, $tumblrService, $cacheService) {
+angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http', '$sce', '$timeout', 'tumblrService', 'cacheService', function($scope, $http, $sce, $timeout, $tumblrService, $cacheService) {
   /*
    * Array de tous les posts
    */
@@ -29,12 +29,13 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
   /*
    * Paramètres à transférer au tumblr.
    */
-  var ajaxParam = $scope.ajaxParam = { // jshint ignore:line
+  var loadingData = $scope.loadingData = { // jshint ignore:line
     start: 0,
-    num: 10
+    num: 6,
+    lastLength: 6,
+    busy : false
   };
 
-  var endOfFeed = false;
   /*
    * Tous les types de post
    */
@@ -47,11 +48,104 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
     audio: 'audio',
     video: 'video',
   };
+
+  /*
+   * Méthode appelée au chargement de la page.
+   * Récupère les infos principales et charge les premiers posts.
+   */
+  $scope.init = function() {
+    angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 1000);
+    $cacheService.construct();
+    $tumblrService.info(function(data) {
+      $scope.infos.title = data.title;
+      $scope.infos.author = data.name;
+      $scope.infos.description = data.description;
+    });
+
+  };
+
+  /*
+   * Récupère et charge les posts puis incrémente start de num.
+   */
+  $scope.loadPosts = function() {
+    if ($scope.loadingData.lastLength < $scope.loadingData.num || $scope.loadingData.busy) {
+      return;
+    }
+    $scope.loadingData.busy = true;
+
+    $tumblrService.posts($scope.loadingData, function(posts) {
+      posts.forEach(function(post) {
+        $timeout(addPost(post), 500);
+      });
+
+      // jscs:disable
+      $scope.loadingData.lastLength = tumblr_api_read.posts.length; // jshint ignore:line
+      $scope.loadingData.start = $scope.loadingData.start + $scope.loadingData.num;
+      // jscs:enable
+      $scope.loadingData.busy = false;
+      $scope.$emit('posts:filtered');
+
+    }.bind(this));
+  };
+
+  /*
+   * Ajoute/Supprime l'objet du cache Trash
+   */
+  $scope.trash = function(idPost) {
+    if ($cacheService.isTrashCached(idPost)) {
+      $cacheService.addToTrash(idPost);
+    } else {
+      $cacheService.removeFromTrash(idPost);
+    }
+  };
+
+  /*
+   * Ajoute/Supprime l'objet du cache Playlist
+   */
+  $scope.playlist = function(idPost) {
+    if ($cacheService.isPlaylistCached(idPost)) {
+      $cacheService.addToPlaylist(idPost);
+    } else {
+      $cacheService.removeFromPlaylist(idPost);
+    }
+  };
+
+  /**
+   * Renvoit la date au format Long
+   */
+  function toDateLong(str) {
+    return new Date(str).getTime();
+  }
+
+  /**
+   * Formate le champs des tags pour les prefixé d'un # et les espacer
+   */
+  function tagArray(tags) {
+    if ( Object.prototype.toString.call( tags ) !== '[object Array]' ) {
+      return [];
+    }
+    var result = [];
+    tags.forEach(function(entry) {
+      entry.split(' ').forEach(function(e) {
+        result.push(e);
+      });
+    });
+    return result;
+  }
+
+  /*
+   * Récupère un embeddedPlayer et modifie ses champs width et height.
+   */
+  function adaptFrameSize(html) {
+    html = html.replace(/(width=")\d+("\W+height=")\d+/, '$1100%$2100%');
+    return html;
+  }
+
   /*
    * Récupère un post au format JSON et l'ajoute dans un
    * format correct à l'array.
    */
-  $scope.addPost = function(post) {
+  function addPost (post) {
     var newPost = {
       id: post.id,
       isTrash: $cacheService.isTrashCached(post.id),
@@ -127,92 +221,6 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
     }
 
     $scope.posts.push(newPost);
-  };
-
-  /*
-   * Méthode appelée au chargement de la page.
-   * Récupère les infos principales et charge les premiers posts.
-   */
-  $scope.init = function() {
-    $cacheService.construct();
-    $tumblrService.info(function(data) {
-      $scope.infos.title = data.title;
-      $scope.infos.author = data.name;
-      $scope.infos.description = data.description;
-    });
-
-  };
-
-  /*
-   * Récupère et charge les posts puis incrémente start de num.
-   */
-  $scope.loadPosts = function() {
-    if (endOfFeed) {
-      return;
-    }
-    console.log($scope.ajaxParam.start + ' - ' + $scope.ajaxParam.num);
-
-    $tumblrService.posts($scope.ajaxParam, function(posts) {
-      posts.forEach(function(post) {
-        $scope.addPost(post);
-      });
-
-      // jscs:disable
-      if (tumblr_api_read.posts.length > 0) { // jshint ignore:line
-        endOfFeed = true;
-        $scope.ajaxParam.start = $scope.ajaxParam.start + $scope.ajaxParam.num;
-      }
-      // jscs:enable
-    });
-  };
-
-  /*
-   * Ajoute/Supprime l'objet du cache Trash
-   */
-  $scope.trash = function(idPost) {
-    if ($cacheService.isTrashCached(idPost)) {
-      $cacheService.addToTrash(idPost);
-    } else {
-      $cacheService.removeFromTrash(idPost);
-    }
-  };
-
-  /*
-   * Ajoute/Supprime l'objet du cache Playlist
-   */
-  $scope.playlist = function(idPost) {
-    if ($cacheService.isPlaylistCached(idPost)) {
-      $cacheService.addToPlaylist(idPost);
-    } else {
-      $cacheService.removeFromPlaylist(idPost);
-    }
-  };
-
-  /**
-   * Renvoit la date au format Long
-   */
-  function toDateLong(str) {
-    return new Date(str).getTime();
   }
 
-  /**
-   * Formate le champs des tags pour les prefixé d'un # et les espacer
-   */
-  function tagArray(tags) {
-    if ( Object.prototype.toString.call( tags ) !== '[object Array]' ) {
-      return [];
-    }
-    var result = [];
-    tags.forEach(function(entry) {
-      entry.split(' ').forEach(function(e) {
-        result.push(e);
-      });
-    });
-    return result;
-  }
-
-  function adaptFrameSize(html) {
-    html = html.replace(/(width=")\d+("\W+height=")\d+/, '$1100%$2100%');
-    return html;
-  }
 }]);
