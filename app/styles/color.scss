@@ -28,9 +28,10 @@ $c-dark-mauve: #9274a6;
       }
       [class$="-infos"] {
         background: rgba($c-dark-mauve, 0.7);
-      } 
+      }
     }
     .footer {
+      border-top-color: rgba($c-light-mauve, 0.5);
       .left {
         color: $c-dark-mauve;
       }

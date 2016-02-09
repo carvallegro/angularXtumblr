@@ -18,6 +18,7 @@ $susy: ( container-position: center, columns: 4, column-width: 10em, gutters: 1/
   .gr-w {
     margin-bottom: 1em;
     min-height: 25em;
+    height: 25em;
     max-height: 25em;
 
     @include flexbox(( display: inline-flex, flex-direction: column ));
@@ -29,16 +30,29 @@ $susy: ( container-position: center, columns: 4, column-width: 10em, gutters: 1/
     in-post-video, in-post-audio, in-post-default, in-post-photo,
     in-post-quote, in-post-link, in-post-conversation {
       @include order(1);
-      @include flex-grow(20);
+      @include flex-grow(1000);
+      min-width: 100%;
       width: 100%;
+      max-width: 100%;
       overflow: hidden;
 
+      @include flexbox(( display: inline-flex, flex-direction: column ));
+      @include justify-content(flex-end);
+      // @include align-items(stretch);
+      // @include align-content(flex-end);
+
       .hashtag-section {
+        @include order(1);
+        @include flex-grow(0);
+
         font-family: $droid;
         font-size: 0.8em;
       }
 
       h3{
+        @include order(2);
+        @include flex-grow(0);
+
         font-family: $playfair;
         font-size: 1.3em;
         font-weight: 100;
@@ -64,9 +78,13 @@ $susy: ( container-position: center, columns: 4, column-width: 10em, gutters: 1/
       // h3
 
       .subtitle {
+        @include order(3);
+        @include flex-grow(0);
         font-family: $playfair;
         font-style: italic;
         font-size: 1em;
+        max-height: 10em !important;
+
         &.quote-author {
           &:before {
             content: "\2013";
@@ -132,6 +150,11 @@ $susy: ( container-position: center, columns: 4, column-width: 10em, gutters: 1/
           color: white;
           text-align: center;
 
+          & > [class$="-infos-cont"] {
+            position: relative;
+            top: 40%;
+            bottom: 50%;
+          }
           .hashtag-section{
             color: white;
           }
@@ -163,7 +186,8 @@ $susy: ( container-position: center, columns: 4, column-width: 10em, gutters: 1/
       @include order(2);
       @include flex-grow(1);
       width: 100%;
-      padding: 6px 3px;
+      padding-top: 6px;
+      margin-top: 6px;
       border-top : 2px solid rgba($c-light-grey, 0.5);
       font-size  : 0.7em;
 
