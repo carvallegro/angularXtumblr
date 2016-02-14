@@ -11,7 +11,9 @@
  * # PostcontrollerCtrl
  * Controller of the myTumblrApp
  */
-angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http', '$sce', '$timeout', 'tumblrService', 'cacheService', function($scope, $http, $sce, $timeout, $tumblrService, $cacheService) {
+angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http', '$sce', '$timeout', '$interval', '$q', 'tumblrService', 'cacheService',
+  function($scope, $http, $sce, $timeout, $interval, $q, $tumblrService, $cacheService) {
+
   /*
    * Array de tous les posts
    */
@@ -54,7 +56,7 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
    * Récupère les infos principales et charge les premiers posts.
    */
   $scope.init = function() {
-    angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 1000);
+    angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 500);
     $cacheService.construct();
     $tumblrService.info(function(data) {
       $scope.infos.title = data.title;
@@ -74,9 +76,14 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
     $scope.loadingData.busy = true;
 
     $tumblrService.posts($scope.loadingData, function(posts) {
-      posts.forEach(function(post) {
-        $timeout(addPost(post), 500);
-      });
+      var index = 0;
+      $interval(function(){
+        if (index >= posts.length) {
+          return;
+        }
+        addPost(posts[index]);
+        ++index;
+      }, 300, posts.length);
 
       // jscs:disable
       $scope.loadingData.lastLength = tumblr_api_read.posts.length; // jshint ignore:line
@@ -146,6 +153,34 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
    * format correct à l'array.
    */
   function addPost (post) {
+    createPost (post);
+    var promise = asyncPost(post);
+    promise.then(
+      function (output) { // success
+        $scope.posts.push(output);
+      },
+      function (error) { // error
+        console.error(error);
+      }
+    );
+  }
+
+  function asyncPost (tPost) {
+    var deferred = $q.defer();
+
+    $timeout(function() {
+      var newPost = createPost(tPost);
+      if (newPost !== null) {
+        deferred.resolve(newPost);
+      } else {
+        deferred.reject('Error Generating tumblr Post');
+      }
+    }, 500);
+
+    return deferred.promise;
+  }
+
+  function createPost (post) {
     var newPost = {
       id: post.id,
       isTrash: $cacheService.isTrashCached(post.id),
@@ -220,7 +255,6 @@ angular.module('myTumblrApp').controller('PostcontrollerCtrl', ['$scope', '$http
         break;
     }
 
-    $scope.posts.push(newPost);
+    return newPost;
   }
-
 }]);
